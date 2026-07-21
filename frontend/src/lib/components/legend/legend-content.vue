@@ -64,7 +64,7 @@
 						{
 							key: 'bus-alternate',
 							colour: '#f00',
-							stroke: 'dashed',
+							stroke: 'dashed' as const,
 							label: i18n.t('legend-content.public-transportation-bus-alternate-label')
 						},
 						{
