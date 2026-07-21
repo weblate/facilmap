@@ -1025,6 +1025,10 @@
         "cycling-restrictions-motorroad-description": "Diese Straße ist eine Kraftfahrstraße. In manchen Regionen wird das Radfahren möglicherweise geduldet.",
         "cycling-restrictions-pedestrian-label": "Vorrang für Fußgänger",
         "cycling-restrictions-pedestrian-description": "Das Radfahren ist hier erlaubt, aber Fußgänger haben Vorrang. Abhängig von den örtlichen gesetzlichen Vorgaben kann eine Geschwindigkeitsbegrenzung (zum Beispiel Schrittgeschwindigkeit) impliziert sein.",
+        "cycling-restrictions-optional-label": "Angebotsradweg",
+        "cycling-restrictions-optional-description": "Ein getrennter Radweg ohne Benutzungspflicht verläuft entlang dieser Straße. Das Radfahren auf der Straße ist erlaubt, aber abhängig von der örtlichen Straßenverkehrskultur kann es mit einem Risiko von Übergriffen und Gewalt verbunden sein, besonders durch Autofahrer.",
+        "cycling-restrictions-allowed-label": "Erlaubt",
+        "cycling-restrictions-allowed-description": "Das Radfahren ist in Pfeilrichtung erlaubt, zum Beispiel entgegen einer Einbahnstraße.",
         "cobblestone": "Kopfsteinpflaster",
         "cobblestone-cobblestone-label": "Kopfsteinpflaster"
     }

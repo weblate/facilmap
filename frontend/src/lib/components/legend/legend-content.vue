@@ -82,7 +82,10 @@
 							colour: '#642',
 							label: i18n.t('legend-content.public-transportation-aerialway-label')
 						},
-					]"
+					].map((i) => ({
+						...i,
+						border: false
+					}))"
 					:noPopover="props.noPopover"
 					:infoPlacement="props.infoPlacement"
 				></LegendItems>
@@ -113,7 +116,10 @@
 							colour: '#7d31c6',
 							label: i18n.t('legend-content.hiking-paths-local-label')
 						}
-					]"
+					].map((i) => ({
+						...i,
+						border: false
+					}))"
 					:noPopover="props.noPopover"
 					:infoPlacement="props.infoPlacement"
 				></LegendItems>
@@ -144,7 +150,10 @@
 							colour: '#7d31c6',
 							label: i18n.t('legend-content.bicycle-routes-local-label')
 						}
-					]"
+					].map((i) => ({
+						...i,
+						border: false
+					}))"
 					:noPopover="props.noPopover"
 					:infoPlacement="props.infoPlacement"
 				></LegendItems>
@@ -160,7 +169,10 @@
 							colour: '#800080',
 							label: i18n.t('legend-content.tolls-tolls-label')
 						}
-					]"
+					].map((i) => ({
+						...i,
+						border: false
+					}))"
 					:noPopover="props.noPopover"
 					:infoPlacement="props.infoPlacement"
 				></LegendItems>
@@ -200,8 +212,24 @@
 							colour: '#00695C',
 							label: i18n.t('legend-content.cycling-restrictions-pedestrian-label'),
 							description: i18n.t('legend-content.cycling-restrictions-pedestrian-description')
+						},
+						{
+							key: 'optional',
+							colour: '#AEEA00',
+							label: i18n.t('legend-content.cycling-restrictions-optional-label'),
+							description: i18n.t('legend-content.cycling-restrictions-optional-description')
+						},
+						{
+							key: 'allowed',
+							colour: '#00C853',
+							label: i18n.t('legend-content.cycling-restrictions-allowed-label'),
+							description: i18n.t('legend-content.cycling-restrictions-allowed-description'),
+							arrowRight: true
 						}
-					]"
+					].map((i) => ({
+						...i,
+						border: false
+					}))"
 					:noPopover="props.noPopover"
 					:infoPlacement="props.infoPlacement"
 				></LegendItems>
@@ -217,7 +245,10 @@
 							colour: '#A45A52',
 							label: i18n.t('legend-content.cobblestone-cobblestone-label')
 						}
-					]"
+					].map((i) => ({
+						...i,
+						border: false
+					}))"
 					:noPopover="props.noPopover"
 					:infoPlacement="props.infoPlacement"
 				></LegendItems>

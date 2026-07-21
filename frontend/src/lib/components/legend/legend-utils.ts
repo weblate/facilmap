@@ -27,6 +27,8 @@ export interface LegendItem {
 	shape?: Shape;
 	width?: number;
 	stroke?: Stroke;
+	arrowRight?: boolean;
+	border?: boolean;
 	bright?: boolean;
 }
 

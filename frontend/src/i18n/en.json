@@ -587,6 +587,10 @@
         "cycling-restrictions-motorroad-description": "This road is exclusively for motor vehicles. In some places cycling might be tolerated.",
         "cycling-restrictions-pedestrian-label": "Pedestrian priority",
         "cycling-restrictions-pedestrian-description": "Cycling is allowed here, but pedestrians have priority. Depending on local regulations, a speed limit (such as walking speed) might be implied.",
+        "cycling-restrictions-optional-label": "Optional bike path",
+        "cycling-restrictions-optional-description": "A separate bicycle path along this road is optional to use. Cycling on the road is allowed, but depending on the local culture, there might be a risk of getting assaulted or attacked, especially by car drivers.",
+        "cycling-restrictions-allowed-label": "Allowed",
+        "cycling-restrictions-allowed-description": "Cycling is allowed in the direction of the arrow, for example in the opposite direction of a one-way street.",
         "cobblestone": "Cobblestone",
         "cobblestone-cobblestone-label": "Cobblestone"
     },

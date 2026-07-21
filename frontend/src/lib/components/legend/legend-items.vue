@@ -36,7 +36,14 @@
 
 	async function makeIcon(type: Type['type'], item: LegendItem, height = 15): Promise<string> {
 		if(type == "line")
-			return createLinePlaceholderHtml(item.colour || "rainbow", item.width || 5, 50, item.stroke ?? "");
+			return createLinePlaceholderHtml({
+				colour: item.colour || "rainbow",
+				width: item.width || 5,
+				length: 50,
+				stroke: item.stroke ?? "",
+				arrowRight: item.arrowRight,
+				border: item.border
+			});
 		else if (item.colour || item.shape != null)
 			return await getMarkerHtml(item.colour || "rainbow", height, item.icon, item.shape);
 		else
