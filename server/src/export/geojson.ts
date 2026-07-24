@@ -1,5 +1,5 @@
 import { asyncIteratorToArray, streamPromiseToStream, jsonStreamArray, mapAsyncIterator, jsonStreamRecord, type JsonStream, concatAsyncIterators, flatMapAsyncIterator } from "../utils/streams.js";
-import { compileExpression } from "facilmap-utils";
+import { compileFilterExpression } from "facilmap-utils";
 import type { Marker, MarkerFeature, MapId, TrackPoint, Line } from "facilmap-types";
 import Database from "../database/database.js";
 import { cloneDeep, keyBy, mapValues, omit } from "lodash-es";
@@ -13,7 +13,7 @@ export function exportGeoJson(database: Database, mapId: MapId, filter?: string)
 		if (!mapData)
 			throw new Error(getI18n().t("map-not-found-error", { mapId }));
 
-		const filterFunc = compileExpression(filter);
+		const filterFunc = compileFilterExpression(filter);
 
 		const types = keyBy(await asyncIteratorToArray(database.types.getTypes(mapId)), "id");
 
