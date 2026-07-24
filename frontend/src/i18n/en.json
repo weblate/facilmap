@@ -188,6 +188,7 @@
         "header": "Syntax",
         "variable": "Variable",
         "operator": "Operator",
+        "function": "Function",
         "description": "Description",
         "example": "Example",
         "name-description": "Marker/Line name",
@@ -210,6 +211,7 @@
         "time-description": "Line routing time in seconds",
         "ascent-descent-description": "Total climb/drop of line",
         "routePoints-description": "Line point coordinates",
+        "number": "Number",
         "number-description": "Numerical value",
         "text-description": "Text value",
         "mathematical-description": "Mathematical operations ({{modulo}}: modulo, {{power}}: power)",
@@ -280,6 +282,7 @@
         "field-type-textarea": "Text area",
         "field-type-dropdown": "Dropdown",
         "field-type-checkbox": "Checkbox",
+        "field-type-formula": "Formula",
         "field-edit": "Edit",
         "field-reorder": "Reorder",
         "field-add": "Add"
@@ -314,6 +317,10 @@
         "option-remove": "Remove",
         "option-reorder": "Reorder",
         "option-add": "Add"
+    },
+    "edit-type-formula-dialog": {
+        "title": "Edit Formula",
+        "ok-button": "OK"
     },
     "elevation-stats": {
         "ascent-alt": "Ascent",

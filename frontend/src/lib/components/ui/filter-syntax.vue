@@ -206,7 +206,7 @@
 				</tr>
 
 				<tr>
-					<td><code>number</code></td>
+					<td>{{i18n.t("filter-syntax.number")}}</td>
 					<td>{{i18n.t("filter-syntax.number-description")}}</td>
 					<td><code>distance &lt; 1.5</code></td>
 				</tr>
@@ -287,6 +287,12 @@
 					<td><code>~=</code></td>
 					<td>{{i18n.t("filter-syntax.regexp-description")}}</td>
 					<td><code>name ~= &quot;^[Cc]amp$&quot;</code></td>
+				</tr>
+
+				<tr>
+					<th>{{i18n.t("filter-syntax.function")}}</th>
+					<th>{{i18n.t("filter-syntax.description")}}</th>
+					<th>{{i18n.t("filter-syntax.example")}}</th>
 				</tr>
 
 				<tr>

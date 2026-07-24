@@ -5,7 +5,7 @@ import * as z from "zod";
 export const objectTypeValidator = z.enum(["marker", "line"]);
 export type ObjectType = z.infer<typeof objectTypeValidator>;
 
-export const fieldTypeValidator = z.enum(["textarea", "dropdown", "checkbox", "input"]);
+export const fieldTypeValidator = z.enum(["textarea", "dropdown", "checkbox", "input", "formula"]);
 export type FieldType = z.infer<typeof fieldTypeValidator>;
 
 export const fieldOptionValidator = cruValidator({
@@ -64,6 +64,7 @@ export const fieldValidator = cruValidator({
 	name: z.string().trim().min(1),
 	type: fieldTypeValidator,
 	default: z.string().optional(),
+	formula: z.string().optional(),
 	controlColour: z.boolean().optional(),
 	controlSize: z.boolean().optional(),
 	controlIcon: z.boolean().optional(),

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 	import { Writable, lineValidator, type ID } from "facilmap-types";
-	import { canControl, formatFieldName, formatTypeName, getOrderedTypes, mergeObject } from "facilmap-utils";
+	import { canControl, formatTypeName, getOrderedTypes, mergeObject } from "facilmap-utils";
 	import { getUniqueId, getZodValidator, validateRequired } from "../utils/utils";
 	import { cloneDeep, isEqual, omit } from "lodash-es";
 	import ModalDialog from "./ui/modal-dialog.vue";
 	import ColourPicker from "./ui/colour-picker.vue";
-	import FieldInput from "./ui/field-input.vue";
 	import RouteMode from "./ui/route-mode.vue";
 	import WidthPicker from "./ui/width-picker.vue";
 	import { computed, ref, toRef, watch } from "vue";
@@ -15,8 +14,8 @@
 	import ValidatedField from "./ui/validated-form/validated-field.vue";
 	import StrokePicker from "./ui/stroke-picker.vue";
 	import { useI18n } from "../utils/i18n";
-	import { useMaxBreakpoint } from "../utils/bootstrap";
 	import EditTypeDialog from "./edit-type-dialog/edit-type-dialog.vue";
+	import EditObjectFields from "./ui/edit-object-fields.vue";
 
 	const context = injectContextRequired();
 	const client = requireClientContext(context);
@@ -44,8 +43,6 @@
 	const types = computed(() => getOrderedTypes(client.value.types).filter((type) => type.type === "line"));
 
 	const resolvedCanControl = computed(() => canControl(client.value.types[line.value.typeId]));
-
-	const isXs = useMaxBreakpoint("xs");
 
 	const showEditTypeDialog = ref<ID>();
 
@@ -140,28 +137,10 @@
 				</div>
 			</template>
 
-			<template v-for="(field, idx) in client.types[line.typeId].fields" :key="field.name">
-				<template v-if="field.type !== 'checkbox' || !isXs">
-					<div class="row mb-3">
-						<label :for="`${id}-${idx}-input`" class="col-sm-3 col-form-label text-break">{{formatFieldName(field.name)}}</label>
-						<div class="col-sm-9" :class="{ 'fm-form-check-with-label': field.type === 'checkbox' }">
-							<FieldInput
-								:id="`${id}-${idx}-input`"
-								:field="field"
-								v-model="line.data[field.name]"
-							></FieldInput>
-						</div>
-					</div>
-				</template>
-				<template v-else>
-					<FieldInput
-						:id="`${id}-${idx}-input`"
-						:field="field"
-						v-model="line.data[field.name]"
-						showCheckboxLabel
-					></FieldInput>
-				</template>
-			</template>
+			<EditObjectFields
+				:object="line"
+				@update="(fieldName, value) => { if (value != null) { line.data[fieldName] = value; } else { delete line.data[fieldName]; } }"
+			></EditObjectFields>
 		</template>
 
 		<template #footer-left>

@@ -3,8 +3,10 @@ import { flattenObject, getProperty, quoteRegExp } from "./utils.js";
 import { type ID, type Marker, type Line, type Type, type CRU, currentMarkerToLegacyV2 } from "facilmap-types";
 import { cloneDeep } from "lodash-es";
 import { normalizeFieldValue } from "./objects";
+import { CHECKBOX_FALSE_LABEL, CHECKBOX_TRUE_LABEL } from "./format.js";
 
-export type FilterFunc = (obj: Marker<CRU> | Line<CRU>, type: Type) => boolean;
+export type FormulaFunc = (obj: Marker<CRU> | Line<CRU>, type: Type) => string;
+export type FilterFunc = (...args: Parameters<FormulaFunc>) => boolean;
 
 const customFuncs = {
 	prop(obj: any, key: string) {
@@ -30,13 +32,39 @@ export function filterHasError(expr: string): Error | undefined {
 	}
 }
 
-export function compileExpression(expr?: string): FilterFunc {
+export function compileFilterExpression(expr?: string): FilterFunc {
 	if(!expr || !expr.trim())
 		return () => true;
 	else {
 		const filterFunc = filtrexCompileExpression(expr, { extraFunctions: customFuncs });
-		return (obj, type) => filterFunc(prepareObject(obj, type));
+		return (obj, type) => !!filterFunc(prepareObject(obj, type));
 	}
+}
+
+export function compileFormulaExpression(expr?: string): FormulaFunc {
+	try {
+		if (expr && expr.trim()) {
+			const func = filtrexCompileExpression(expr, { extraFunctions: customFuncs });
+			return (obj, type) => {
+				const result = func(prepareObject(obj, type));
+				switch (typeof result) {
+					case "boolean":
+						return result ? CHECKBOX_TRUE_LABEL : CHECKBOX_FALSE_LABEL;
+					case "number":
+					case "bigint":
+						return `${result}`;
+					case "string":
+						return result;
+					default:
+						return "";
+				}
+			};
+		}
+	} catch {
+		// Ignore
+	}
+
+	return () => "";
 }
 
 export function quote(str: string): string {
