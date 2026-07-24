@@ -181,8 +181,10 @@
     "edit-filter-dialog": {
         "title": "Filter",
         "apply": "Anwenden",
-        "introduction": "Hier können Sie eine Filterformel festlegen, die definiert, welche Marker/Linien basierend auf ihren Attributen angezeigt/versteckt werden sollen. Die Filterformel beeinflusst nur Ihre persönliche Ansicht der Karte, sie kann jedoch als Teil einer gespeicherten Ansicht oder eines geteilten Links wiederverwendet werden.",
-        "syntax-header": "Syntax",
+        "introduction": "Hier können Sie eine Filterformel festlegen, die definiert, welche Marker/Linien basierend auf ihren Attributen angezeigt/versteckt werden sollen. Die Filterformel beeinflusst nur Ihre persönliche Ansicht der Karte, sie kann jedoch als Teil einer gespeicherten Ansicht oder eines geteilten Links wiederverwendet werden."
+    },
+    "filter-syntax": {
+        "header": "Syntax",
         "variable": "Variable",
         "operator": "Operator",
         "description": "Beschreibung",

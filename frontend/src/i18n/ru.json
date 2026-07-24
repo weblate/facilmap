@@ -11,9 +11,11 @@
         "connecting": "Подключение к серверу…"
     },
     "edit-filter-dialog": {
+        "title": "Фильтр"
+    },
+    "filter-syntax": {
         "description": "Описание",
-        "title": "Фильтр",
-        "syntax-header": "Синтаксис",
+        "header": "Синтаксис",
         "example": "Пример"
     },
     "about-dialog": {

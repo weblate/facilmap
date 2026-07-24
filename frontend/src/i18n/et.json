@@ -161,8 +161,10 @@
     },
     "edit-filter-dialog": {
         "title": "Filtreeri",
-        "apply": "Rakenda",
-        "syntax-header": "Süntaks",
+        "apply": "Rakenda"
+    },
+    "filter-syntax": {
+        "header": "Süntaks",
         "description": "Kirjeldus",
         "example": "Näide",
         "name-description": "Markeri/joone nimi",
