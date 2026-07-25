@@ -50,6 +50,8 @@ export function normalizeFieldValue(field: Field, value: string | undefined, ign
 		return getSelectedOption(field, value, ignoreDefault)?.value ?? "";
 	} else if (field.type === "checkbox") {
 		return value === "1" ? "1" : "0";
+	} else if (field.type === "formula") {
+		return "";
 	} else {
 		return value ?? "";
 	}

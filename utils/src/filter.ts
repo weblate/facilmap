@@ -138,6 +138,17 @@ export function makeTypeFilter(previousFilter: string = "", typeId: ID, filtered
 	return ret;
 }
 
+/**
+ * Keeps track synchronously of the calculated formula field names to prevent infinite recursion.
+ * When a filter/formula function accesses the value of a formula field, its result is calculated on the fly by its getter.
+ * The formula field itself might access the value of another formula field again, which has the risk of creating an infinite loop.
+ * This variable is normally undefined. When a getter encounters the variable as undefined, it knows that it is the "outermost"
+ * getter and initializes the array. Each getter inserts its field name into the array, and if it finds its field name already there,
+ * it returns an empty value, since we have an inifinite loop of field references. Since formula fields are calculated synchronously,
+ * no more complex logic than tracking field names in this single global variable is necessary.
+ */
+let handledFieldNames: string[] | undefined = undefined;
+
 export function prepareObject(obj: Marker<CRU> | Line<CRU>, type: Type): any {
 	const fixedObj: any = cloneDeep(obj);
 
@@ -145,7 +156,9 @@ export function prepareObject(obj: Marker<CRU> | Line<CRU>, type: Type): any {
 		fixedObj.data = Object.create(null) as {};
 	}
 	for (const field of type.fields) {
-		fixedObj.data[field.name] = normalizeFieldValue(field, fixedObj.data[field.name]);
+		if (field.type !== "formula") {
+			fixedObj.data[field.name] = normalizeFieldValue(field, fixedObj.data[field.name]);
+		}
 	}
 
 	let ret = {
@@ -158,6 +171,38 @@ export function prepareObject(obj: Marker<CRU> | Line<CRU>, type: Type): any {
 
 	if(type)
 		ret.type = type.type;
+
+	for (const field of type.fields) {
+		if (field.type === "formula") {
+			let value: [false] | [true, string] = [false];
+			const getter = () => {
+				if (!value[0]) {
+					const isOuterGetter = (handledFieldNames == null);
+					if (isOuterGetter) {
+						handledFieldNames = [];
+					}
+
+					try {
+						if (handledFieldNames!.includes(field.name)) {
+							// Infinite loop, return empty value.
+							value = [true, ""];
+						} else {
+							handledFieldNames!.push(field.name);
+							value = [true, compileFormulaExpression(field.formula)(fixedObj, type)];
+						}
+					} finally {
+						if (isOuterGetter) {
+							handledFieldNames = undefined;
+						}
+					}
+				}
+				return value[1];
+			};
+
+			Object.defineProperty(fixedObj.data, field.name, { get: getter, enumerable: true });
+			Object.defineProperty(fixedObj, `data.${field.name}`, { get: getter, enumerable: true });
+		}
+	}
 
 	return ret;
 }
