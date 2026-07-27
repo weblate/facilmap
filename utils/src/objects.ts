@@ -174,7 +174,7 @@ export function getLineTemplate(type: Type): LineTemplate {
 		...omit(resolveCreateLine({
 			typeId: type.id,
 			routePoints: [{ lat: 0, lon: 0 }, { lat: 0, lon: 0 }]
-		}, type), ["routePoints", "extraInfo", "trackPoints"]),
+		}, type), ["routePoints", "extraInfo", "extraInfoStats", "trackPoints"]),
 	} as LineTemplate;
 }
 
