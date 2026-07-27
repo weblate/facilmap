@@ -157,7 +157,8 @@ test("Create line (using custom values)", async () => {
 			time: null,
 			ascent: null,
 			descent: null,
-			extraInfo: null
+			extraInfo: null,
+			extraInfoStats: null
 		};
 
 		const expectedLineWithTrackPoints = {
