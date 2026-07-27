@@ -4,10 +4,11 @@ import { cloneDeep, isEqual } from "lodash-es";
 import Database from "./database.js";
 import type { MapModel } from "./map.js";
 import type { LinePointModel } from "./line.js";
-import { getElevationForPoint } from "facilmap-utils";
+import { createExtraInfoStats, getElevationForPoint } from "facilmap-utils";
 import type { MarkerModel } from "./marker.js";
 import { ReadableStream } from "stream/web";
 import type { MapId } from "facilmap-types";
+import { asyncIteratorToArray } from "../utils/streams.js";
 
 export default class DatabaseMigrations {
 
@@ -36,6 +37,7 @@ export default class DatabaseMigrations {
 		await this._viewsIdxMigration();
 		await this._fieldIconsMigration();
 		await this._historyPadMigration();
+		await this._extraInfoStatsMigration();
 
 		(async () => {
 			await this._elevationMigration();
@@ -775,6 +777,29 @@ export default class DatabaseMigrations {
 		await queryInterface.changeColumn("History", "type", this._db.history.HistoryModel.getAttributes().type);
 
 		await this._db.meta.setMeta("historyPadMigrationCompleted", "1");
+	}
+
+
+	/** Calculate extraInfoStats for all lines that have extraInfo */
+	async _extraInfoStatsMigration(): Promise<void> {
+		const hasExtraInfoStats = await this._db.meta.getMeta("hasExtraInfoStats");
+		if (hasExtraInfoStats === "1") {
+			return;
+		}
+
+		console.log("DB migration: Calculate extra info stats");
+
+		const lines = await this._db.lines.LineModel.findAll({ where: { extraInfo: { [Op.ne]: null }, extraInfoStats: null } });
+
+		for (const line of lines) {
+			if (line.extraInfo) {
+				const trackPoints = await asyncIteratorToArray(this._db.lines.getAllLinePoints(line.id));
+				const extraInfoStats = createExtraInfoStats(line.extraInfo, trackPoints);
+				await line.update({ extraInfoStats });
+			}
+		}
+
+		await this._db.meta.setMeta("hasExtraInfoStats", "1");
 	}
 
 }

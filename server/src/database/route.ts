@@ -188,6 +188,7 @@ export default class DatabaseRoutes {
 			ascent: line.ascent ?? undefined,
 			descent: line.descent ?? undefined,
 			extraInfo: line.extraInfo ?? undefined,
+			extraInfoStats: line.extraInfoStats ?? undefined,
 			top: line.top,
 			left: line.left,
 			bottom: line.bottom,

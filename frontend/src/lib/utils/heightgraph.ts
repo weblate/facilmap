@@ -3,25 +3,10 @@ import { Control, Polyline } from "leaflet";
 import "leaflet.heightgraph/src/L.Control.Heightgraph.css";
 import "./heightgraph.scss";
 import type { TrackPoints } from "facilmap-client";
-import { type ExtraInfo, type TrackPoint } from "facilmap-types";
+import { type ExtraInfo } from "facilmap-types";
 import type { FeatureCollection } from "geojson";
-import { calculateDistance, formatDistance, formatElevation, getCurrentUnits, round } from "facilmap-utils";
+import { calculateDistance, formatDistance, formatElevation, getCurrentUnits, trackSegment } from "facilmap-utils";
 import { getI18n } from "./i18n";
-
-function trackSegment(trackPoints: TrackPoints, fromIdx: number, toIdx: number): TrackPoint[] {
-	let ret: TrackPoint[] = [];
-
-	for(let i=fromIdx; i<trackPoints.length; i++) {
-		if(trackPoints[i] && trackPoints[i].ele != null) {
-			ret.push(trackPoints[i]);
-
-			if(i >= toIdx) // Makes sure that if toIdx does not exist in trackPoints, the next trackPoint is added, which avoids gaps between the segments, as required by leaflet.heightgraph
-				break;
-		}
-	}
-
-	return ret;
-}
 
 type Collection = FeatureCollection & {
 	properties: {
@@ -49,7 +34,7 @@ function createGeoJsonForHeightGraph(extraInfo: ExtraInfo | undefined, trackPoin
 		const distances = featureCollection.properties.distances;
 
 		for(let segment in extraInfo[i]) {
-			const segmentPosList = trackSegment(trackPoints, extraInfo[i][segment][0], extraInfo[i][segment][1]);
+			const segmentPosList = trackSegment(trackPoints, extraInfo[i][segment][0], extraInfo[i][segment][1]).filter((t) => t.ele != null);
 
 			if (distances[extraInfo[i][segment][2]] == null)
 				distances[extraInfo[i][segment][2]] = 0;
@@ -70,23 +55,6 @@ function createGeoJsonForHeightGraph(extraInfo: ExtraInfo | undefined, trackPoin
 		geojson.push(featureCollection);
 	}
 	return geojson;
-}
-
-export function createElevationStats(extraInfo: ExtraInfo, trackPoints: TrackPoints): Record<keyof ExtraInfo, Record<number, { distanceKm: number; percent: number }>> {
-	const totalDistance = calculateDistance(trackPoints);
-	return Object.fromEntries(Object.entries(extraInfo).map(([key, info]) => {
-		const result: Record<number, number> = {};
-		for (const segment in info) {
-			result[info[segment][2]] = (result[info[segment][2]] ?? 0) + calculateDistance(trackSegment(trackPoints, info[segment][0], info[segment][1]));
-		}
-		return [key, Object.fromEntries(Object.entries(result).map(([k, v]) => {
-			const percent = 100 * v / totalDistance;
-			return [k, {
-				distanceKm: v,
-				percent: percent < 1 ? round(percent, 1) : Math.round(percent)
-			}];
-		}))];
-	}));
 }
 
 export function getTranslatedExtraInfoTypes(): Record<string, string> {

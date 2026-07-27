@@ -64,7 +64,8 @@ test("Create line (using default values)", async () => {
 			ascent: null,
 			descent: null,
 			time: null,
-			extraInfo: null
+			extraInfo: null,
+			extraInfoStats: null
 		} satisfies Line;
 
 		const expectedLinePointsEvent = {
@@ -255,7 +256,8 @@ test("Edit line", async () => {
 			time: null,
 			ascent: null,
 			descent: null,
-			extraInfo: null
+			extraInfo: null,
+			extraInfoStats: null
 		} satisfies Line;
 
 		const expectedLinePointsEvent = {

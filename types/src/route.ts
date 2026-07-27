@@ -1,5 +1,5 @@
 import { type Bbox, idValidator, pointValidator, routeModeValidator } from "./base.js";
-import type { ExtraInfo, TrackPoint } from "./line.js";
+import type { ExtraInfo, ExtraInfoStats, TrackPoint } from "./line.js";
 import * as z from "zod";
 
 export interface RouteInfo extends Bbox {
@@ -9,6 +9,7 @@ export interface RouteInfo extends Bbox {
 	ascent?: number;
 	descent?: number;
 	extraInfo?: ExtraInfo;
+	extraInfoStats?: ExtraInfoStats;
 }
 
 const routeBaseValidator = z.object({

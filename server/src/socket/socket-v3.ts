@@ -444,6 +444,7 @@ export class SocketConnectionV3 implements SocketConnection<SocketVersion.V3> {
 					ascent: routeInfo.ascent,
 					descent: routeInfo.descent,
 					extraInfo: routeInfo.extraInfo,
+					extraInfoStats: routeInfo.extraInfoStats,
 					trackPoints: routeInfo.trackPoints
 				};
 			},

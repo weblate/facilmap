@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import type { LineWithTrackPoints, RouteWithTrackPoints } from "facilmap-client";
-	import { createElevationStats, getTranslatedExtraInfoTypes, getTranslatedExtraInfoValues } from "../../utils/heightgraph";
+	import { getTranslatedExtraInfoTypes, getTranslatedExtraInfoValues } from "../../utils/heightgraph";
 	import Icon from "./icon.vue";
 	import { formatAscentDescent, formatDistance } from "facilmap-utils";
 	import { computed, ref } from "vue";
@@ -18,8 +18,8 @@
 	const translatedTypes = computed(() => getTranslatedExtraInfoTypes());
 	const translatedValues = computed(() => getTranslatedExtraInfoValues());
 
-	const stats = computed(() => createElevationStats(props.route.extraInfo ?? {}, props.route.trackPoints));
-	const hasStats = computed(() => Object.keys(stats.value).length > 0);
+	const hasStats = computed(() => props.route.extraInfoStats);
+	const stats = computed(() => props.route.extraInfoStats ?? {});
 
 	const tabValue = ref<string>();
 	const tab = computed({

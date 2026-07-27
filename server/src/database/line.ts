@@ -1,5 +1,5 @@
 import { type CreationAttributes, type CreationOptional, DataTypes, type ForeignKey, type HasManyGetAssociationsMixin, type InferAttributes, type InferCreationAttributes, Model, Op } from "sequelize";
-import type { BboxWithZoom, ID, Latitude, Line, ExtraInfo, Longitude, MapId, Point, Route, TrackPoint, CRU, RouteInfo, Stroke, Colour, RouteMode, Width, Type, LineTemplate } from "facilmap-types";
+import type { BboxWithZoom, ID, Latitude, Line, ExtraInfo, Longitude, MapId, Point, Route, TrackPoint, CRU, RouteInfo, Stroke, Colour, RouteMode, Width, Type, LineTemplate, ExtraInfoStats } from "facilmap-types";
 import Database from "./database.js";
 import { type BboxWithExcept, createModel, dataDefinition, type DataModel, getDefaultIdType, getLatType, getLonType, getPosType, getVirtualLatType, getVirtualLonType, makeNotNullForeignKey } from "./helpers.js";
 import { chunk, groupBy, isEqual, mapValues, omit } from "lodash-es";
@@ -33,6 +33,7 @@ export interface LineModel extends Model<InferAttributes<LineModel>, InferCreati
 	left: Longitude;
 	right: Longitude;
 	extraInfo: CreationOptional<ExtraInfo | null>;
+	extraInfoStats: CreationOptional<ExtraInfoStats | null>;
 
 	getLinePoints: HasManyGetAssociationsMixin<LinePointModel>;
 	toJSON: () => Line;
@@ -133,6 +134,18 @@ export default class DatabaseLines {
 				},
 				set: function(this: LineModel, v: ExtraInfo) {
 					this.setDataValue("extraInfo", v != null ? JSON.stringify(v) as any : v);
+				},
+				defaultValue: null
+			},
+			extraInfoStats: {
+				type: DataTypes.TEXT,
+				allowNull: true,
+				get: function(this: LineModel) {
+					const extraInfoStats = this.getDataValue("extraInfoStats") as any as string; // https://github.com/sequelize/sequelize/issues/11558
+					return extraInfoStats != null ? JSON.parse(extraInfoStats) : extraInfoStats;
+				},
+				set: function(this: LineModel, v: ExtraInfoStats) {
+					this.setDataValue("extraInfoStats", v != null ? JSON.stringify(v) as any : v);
 				},
 				defaultValue: null
 			}
