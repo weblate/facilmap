@@ -755,6 +755,8 @@
         "title-create": "Create collaborative map",
         "title-edit": "Map settings",
         "create-button": "Create",
+        "tab-general": "General",
+        "tab-delete-map": "Delete map",
         "admin-link-label": "Admin link",
         "admin-link-description": "When opening the map through this link, all parts of the map can be edited, including the map settings, object types and views.",
         "write-link-label": "Editable link",
