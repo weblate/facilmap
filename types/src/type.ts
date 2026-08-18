@@ -1,4 +1,4 @@
-import { colourValidator, idValidator, mapIdValidator, routeModeValidator, shapeValidator, sizeValidator, strokeValidator, iconValidator, widthValidator } from "./base.js";
+import { colourValidator, idValidator, mapIdValidator, routeModeValidator, shapeValidator, sizeValidator, strokeValidator, iconValidator, widthValidator, formulaValidator } from "./base.js";
 import { CRU, type CRUType, cruValidator, onlyUpdate, optionalCreate, exceptUpdate, optionalUpdate, onlyRead, type CRUValidator } from "./cru.js";
 import * as z from "zod";
 
@@ -64,7 +64,7 @@ export const fieldValidator = cruValidator({
 	name: z.string().trim().min(1),
 	type: fieldTypeValidator,
 	default: z.string().optional(),
-	formula: z.string().optional(),
+	formula: formulaValidator.optional(),
 	controlColour: z.boolean().optional(),
 	controlSize: z.boolean().optional(),
 	controlIcon: z.boolean().optional(),

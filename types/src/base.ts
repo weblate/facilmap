@@ -81,6 +81,12 @@ export enum Units {
 }
 export const unitsValidator = z.nativeEnum(Units);
 
+export const formulaValidator = z.object({
+	type: z.literal("filtrex"),
+	code: z.string()
+});
+export type Formula = z.infer<typeof formulaValidator>;
+
 export type ReplaceProperties<T1 extends Record<keyof any, any>, T2 extends Partial<Record<keyof T1, any>>> = Omit<T1, keyof T2> & T2;
 
 // Copied from @vue/reactivity

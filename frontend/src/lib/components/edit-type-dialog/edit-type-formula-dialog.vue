@@ -29,7 +29,7 @@ import FilterSyntax from "../ui/filter-syntax.vue";
 	const initialField = computed(() => {
 		const field: FieldUpdate = cloneDeep(props.field);
 		if (field.formula == null) {
-			field.formula = '';
+			field.formula = { type: "filtrex", code: "" };
 		}
 		return field;
 	});
@@ -73,7 +73,7 @@ import FilterSyntax from "../ui/filter-syntax.vue";
 		ref="modalRef"
 	>
 		<ValidatedField
-			:value="fieldValue.formula"
+			:value="fieldValue.formula!.code"
 			:validators="[
 				validateFilter
 			]"
@@ -82,7 +82,7 @@ import FilterSyntax from "../ui/filter-syntax.vue";
 			<template #default="slotProps">
 				<textarea
 					class="form-control text-monospace"
-					v-model="fieldValue.formula"
+					v-model="fieldValue.formula!.code"
 					rows="5"
 					:ref="slotProps.inputRef"
 				></textarea>

@@ -20,6 +20,7 @@ export interface MetaProperties {
 	fieldIconsMigrationCompleted: "1";
 	historyPadMigrationCompleted: "1";
 	hasExtraInfoStats: "1";
+	formulaObjectMigrationCompleted: "1";
 }
 
 export default class DatabaseMeta {

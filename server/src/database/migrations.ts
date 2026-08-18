@@ -38,6 +38,7 @@ export default class DatabaseMigrations {
 		await this._fieldIconsMigration();
 		await this._historyPadMigration();
 		await this._extraInfoStatsMigration();
+		await this._formulaObjectMigration();
 
 		(async () => {
 			await this._elevationMigration();
@@ -800,6 +801,37 @@ export default class DatabaseMigrations {
 		}
 
 		await this._db.meta.setMeta("hasExtraInfoStats", "1");
+	}
+
+
+	/**
+	 * Convert field.formula to an object.
+	 */
+	async _formulaObjectMigration(): Promise<void> {
+		if (await this._db.meta.getMeta("formulaObjectMigrationCompleted") === "1") {
+			return;
+		}
+
+		console.log("DB migration: Convert field formulas to objects");
+
+		const types = await this._db.types.TypeModel.findAll();
+
+		for (const type of types) {
+			let changed = false;
+			const fields = type.fields;
+			for (const field of fields) {
+				if (typeof field.formula === "string") {
+					field.formula = { type: "filtrex", code: field.formula };
+					changed = true;
+				}
+			}
+
+			if (changed) {
+				await type.update({ fields });
+			}
+		}
+
+		await this._db.meta.setMeta("formulaObjectMigrationCompleted", "1");
 	}
 
 }
