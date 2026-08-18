@@ -193,8 +193,6 @@
     },
     "filter-syntax": {
         "header": "Синтаксис",
-        "variable": "Змінна",
-        "operator": "Оператор",
         "description": "Опис",
         "example": "Приклад",
         "name-description": "Назва маркера/лінії",
@@ -202,7 +200,7 @@
         "typeId-description": "{{items}})",
         "typeId-description-item": "{{typeId}} ({{typeName}})",
         "typeId-description-separator": " / ",
-        "data-description-1": "Значення полів (приклад: {{example1}} або {{example2}}).",
+        "data-description-1": "Значення полів.",
         "data-description-2": "Для полів з прапорцями значення дорівнює {{uncheckedValue}} (не позначено) або {{checkedValue}} (позначено).",
         "lon-lat-description": "Координати маркера",
         "colour-description": "Колір маркера/лінії",

@@ -185,8 +185,7 @@
     },
     "filter-syntax": {
         "header": "Syntax",
-        "variable": "Variable",
-        "operator": "Operator",
+        "operation": "Operation",
         "description": "Beschreibung",
         "example": "Beispiel",
         "name-description": "Name des Markers oder der Linie",
@@ -194,7 +193,7 @@
         "typeId-description": "Typ des Objekts: {{items}})",
         "typeId-description-item": "{{typeId}} ({{typeName}})",
         "typeId-description-separator": " / ",
-        "data-description-1": "Feldwerte (Beispiel: {{example1}} oder {{example2}}).",
+        "data-description-1": "Feldwerte.",
         "data-description-2": "Für Checkbox-Felder ist der Wert {{uncheckedValue}} (nicht selektiert) oder {{checkedValue}} (selektiert).",
         "lon-lat-description": "Koordinaten des Markers",
         "colour-description": "Farbe des Markers oder der Linie",

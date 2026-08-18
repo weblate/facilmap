@@ -57,8 +57,6 @@
     },
     "filter-syntax": {
         "header": "தொடரியல்",
-        "variable": "மாறக்கூடிய",
-        "operator": "ஆபரேட்டர்",
         "description": "விவரம்",
         "example": "எடுத்துக்காட்டு",
         "name-description": "மார்க்கர்/வரி பெயர்",
@@ -67,7 +65,7 @@
         "typeId-description-item": "{{typeId}} ({{typeName}})",
         "data-description-2": "தேர்வுப்பெட்டி புலங்களுக்கு, மதிப்பு {{uncheckedValue}}} (தேர்வு செய்யப்படாதது) அல்லது {{checkedValue}} (சரிபார்க்கப்பட்டது).",
         "typeId-description-separator": " / ",
-        "data-description-1": "புல மதிப்புகள் (எடுத்துக்காட்டு: {{example1}} அல்லது {{example2}}).",
+        "data-description-1": "புல மதிப்புகள்.",
         "lon-lat-description": "மார்க்கர் ஒருங்கிணைப்புகள்",
         "colour-description": "மார்க்கர்/வரி நிறம்",
         "stroke-description": "வரி பக்கவாதம் ({{solid}} (திட) / {{dashed}} / {{dotted}}))",

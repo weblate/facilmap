@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import type { CRU, Field, FieldUpdate, Type } from "facilmap-types";
-	import { filterHasError, mergeObject } from "facilmap-utils";
+	import { filterHasError, markdownBlock, mergeObject } from "facilmap-utils";
 	import { cloneDeep, isEqual } from "lodash-es";
 	import ModalDialog from "../ui/modal-dialog.vue";
 	import { useToasts } from "../ui/toasts/toasts.vue";
@@ -8,7 +8,7 @@
 	import { injectContextRequired } from "../facil-map-context-provider/facil-map-context-provider.vue";
 	import ValidatedField from "../ui/validated-form/validated-field.vue";
 	import { useI18n } from "../../utils/i18n";
-import FilterSyntax from "../ui/filter-syntax.vue";
+	import FilterSyntax from "../ui/filter-syntax.vue";
 
 	const context = injectContextRequired();
 	const toasts = useToasts();
@@ -72,6 +72,8 @@ import FilterSyntax from "../ui/filter-syntax.vue";
 		:okLabel="isModified ? i18n.t('edit-type-formula-dialog.ok-button') : undefined"
 		ref="modalRef"
 	>
+		<p v-html="markdownBlock(i18n.t('edit-type-formula-dialog.introduction'), true)"></p>
+
 		<ValidatedField
 			:value="fieldValue.formula!.code"
 			:validators="[
@@ -94,7 +96,7 @@ import FilterSyntax from "../ui/filter-syntax.vue";
 
 		<hr />
 
-		<FilterSyntax></FilterSyntax>
+		<FilterSyntax isFormula></FilterSyntax>
 	</ModalDialog>
 </template>
 

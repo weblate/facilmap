@@ -171,7 +171,7 @@
         "type-description": "{{marker}} / {{line}}",
         "typeId-description": "{{items}})",
         "typeId-description-separator": " / ",
-        "data-description-1": "Välja väärtuse (näiteks: {{example1}} või {{example2}}).",
+        "data-description-1": "Välja väärtuse.",
         "data-description-2": "Märkeruudu väljade puhul on väärtus „{{uncheckedValue}}“ (märkimata) või „{{checkedValue}}“ (märgitud).",
         "lon-lat-description": "Markeri koordinaadid",
         "colour-description": "Markeri/joone värv",
@@ -185,8 +185,7 @@
         "number-description": "Numbriline väärtus",
         "text-description": "Tekstiline väärtus",
         "lower-description": "Teisenda väiketähtedeks",
-        "regexp-description": "Vaste regulaaravaldisele (tõstutundlik)",
-        "variable": "Muutuja"
+        "regexp-description": "Vaste regulaaravaldisele (tõstutundlik)"
     },
     "add-to-map-dropdown": {
         "fallback-label": "Lisa kaardile",

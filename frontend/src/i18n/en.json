@@ -186,9 +186,9 @@
     },
     "filter-syntax": {
         "header": "Syntax",
-        "variable": "Variable",
-        "operator": "Operator",
-        "function": "Function",
+        "expression": "Expression",
+        "operation": "Operation",
+        "comparison": "Comparison",
         "description": "Description",
         "example": "Example",
         "name-description": "Marker/Line name",
@@ -196,7 +196,7 @@
         "typeId-description": "{{items}})",
         "typeId-description-item": "{{typeId}} ({{typeName}})",
         "typeId-description-separator": " / ",
-        "data-description-1": "Field values (example: {{example1}} or {{example2}}).",
+        "data-description-1": "Field values.",
         "data-description-2": "For checkbox fields, the value is {{uncheckedValue}} (unchecked) or {{checkedValue}} (checked).",
         "lon-lat-description": "Marker coordinates",
         "colour-description": "Marker/line colour",
@@ -214,6 +214,8 @@
         "number": "Number",
         "number-description": "Numerical value",
         "text-description": "Text value",
+        "plus-description-1": "Addition (if all values are numbers) or string concatenation.",
+        "plus-description-2": "Use {{code}} to convert strings to numbers.",
         "mathematical-description": "Mathematical operations ({{modulo}}: modulo, {{power}}: power)",
         "logical-description": "Logical operators",
         "ternary-description": "if/then/else operator",
@@ -320,7 +322,8 @@
     },
     "edit-type-formula-dialog": {
         "title": "Edit Formula",
-        "ok-button": "OK"
+        "ok-button": "OK",
+        "introduction": "Formulas allow you to automatically generate values out of other field values or properties of the same marker or line. Here is an overview over the possibilities. If some functionality is missing for your use case, please [report an issue](https://github.com/FacilMap/facilmap/issues)."
     },
     "elevation-stats": {
         "ascent-alt": "Ascent",
