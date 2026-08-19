@@ -30,6 +30,7 @@
 				<div class="col-sm-9" :class="{ 'fm-form-check-with-label': field.type === 'checkbox' }">
 					<FieldInput
 						:id="`${id}-${idx}-input`"
+						:mapData="client.mapData"
 						:type="client.types[props.object.typeId]"
 						:object="props.object"
 						:field="field"
@@ -42,7 +43,11 @@
 		<template v-else>
 			<FieldInput
 				:id="`${id}-${idx}-input`"
+				:mapData="client.mapData"
+				:type="client.types[props.object.typeId]"
+				:object="props.object"
 				:field="field"
+				:modelValue="props.object.data[field.name]"
 				@update:modelValue="emit('update', field.name, $event)"
 				showCheckboxLabel
 			></FieldInput>

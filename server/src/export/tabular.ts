@@ -27,7 +27,7 @@ export async function getTabularData(
 
 	const type = await database.types.getType(mapData.id, typeId);
 
-	const filterFunc = compileFilterExpression(filter);
+	const filterFunc = compileFilterExpression(filter, mapData.customFunctions);
 
 	const handlePlainText = (str: string) => html ? quoteHtml(str) : str;
 
@@ -50,7 +50,7 @@ export async function getTabularData(
 		return [[
 			() => handlePlainText(normalizeMarkerName(marker.name)),
 			() => handlePlainText(`${round(marker.lat, 5)},${round(marker.lon, 5)}`),
-			...type.fields.map((f) => () => formatFieldValue(type, f, marker, html).trim())
+			...type.fields.map((f) => () => formatFieldValue(mapData, type, f, marker, html).trim())
 		]];
 	}) : flatMapStream(asyncIteratorToStream(database.lines.getMapLinesByType(mapId, typeId)), (line): Array<Array<() => string>> => {
 		if (!filterFunc(line, type)) {
@@ -61,7 +61,7 @@ export async function getTabularData(
 			() => handlePlainText(normalizeLineName(line.name)),
 			() => handlePlainText(formatDistance(line.distance)),
 			() => handlePlainText(line.time != null ? formatRouteTime(line.time, line.mode) : ""),
-			...type.fields.map((f) => () => formatFieldValue(type, f, line, html).trim())
+			...type.fields.map((f) => () => formatFieldValue(mapData, type, f, line, html).trim())
 		]];
 	});
 

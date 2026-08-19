@@ -403,7 +403,11 @@ export default class DatabaseMigrations {
 					console.log(`DB migration: Add column ${model.getTableName() as string}.${attribute}`);
 					await queryInterface.addColumn(model.getTableName(), attribute, rawAttributes[attribute]);
 
-					if (table === 'Map' && attribute === 'routeFormulas') {
+					if (table === 'Map' && attribute === 'customFunctions') {
+						await queryInterface.bulkUpdate(model.getTableName(), {
+							customFunctions: []
+						}, {});
+					} else if (table === 'Map' && attribute === 'routeFormulas') {
 						await queryInterface.bulkUpdate(model.getTableName(), {
 							routeFormulas: []
 						}, {});

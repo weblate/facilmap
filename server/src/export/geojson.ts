@@ -13,7 +13,7 @@ export function exportGeoJson(database: Database, mapId: MapId, filter?: string)
 		if (!mapData)
 			throw new Error(getI18n().t("map-not-found-error", { mapId }));
 
-		const filterFunc = compileFilterExpression(filter);
+		const filterFunc = compileFilterExpression(filter, mapData.customFunctions);
 
 		const types = keyBy(await asyncIteratorToArray(database.types.getTypes(mapId)), "id");
 

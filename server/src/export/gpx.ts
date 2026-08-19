@@ -109,8 +109,6 @@ function getLineTrackGpx(line: LineForExport, type: Type | undefined, trackPoint
 
 export function exportGpx(database: Database, mapId: MapId, useTracks: boolean, filter?: string): ReadableStream<string> {
 	return asyncIteratorToStream((async function* () {
-		const filterFunc = compileFilterExpression(filter);
-
 		const [mapData, types] = await Promise.all([
 			database.maps.getMapData(mapId),
 			asyncIteratorToArray(database.types.getTypes(mapId)).then((types) => keyBy(types, 'id'))
@@ -118,6 +116,8 @@ export function exportGpx(database: Database, mapId: MapId, useTracks: boolean, 
 
 		if (!mapData)
 			throw new Error(getI18n().t("map-not-found-error", { mapId }));
+
+		const filterFunc = compileFilterExpression(filter, mapData.customFunctions);
 
 		yield (
 			`${gpxHeader}\n` +
@@ -155,8 +155,6 @@ export function exportGpxZip(database: Database, mapId: MapId, useTracks: boolea
 	const encodeZipStream = getZipEncodeStream();
 
 	void asyncIteratorToStream((async function*(): AsyncIterable<ZipEncodeStreamItem> {
-		const filterFunc = compileFilterExpression(filter);
-
 		const [mapData, types] = await Promise.all([
 			database.maps.getMapData(mapId),
 			asyncIteratorToArray(database.types.getTypes(mapId)).then((types) => keyBy(types, 'id'))
@@ -165,6 +163,8 @@ export function exportGpxZip(database: Database, mapId: MapId, useTracks: boolea
 		if (!mapData) {
 			throw new Error(getI18n().t("map-not-found-error", { mapId }));
 		}
+
+		const filterFunc = compileFilterExpression(filter, mapData.customFunctions);
 
 		yield {
 			filename: "markers.gpx",

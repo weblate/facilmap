@@ -225,7 +225,8 @@
         "lower-description": "Convert to lower case",
         "round-description": "Round ({{ceil}}: up, {{floor}}: down)",
         "functions-description": "Mathematical functions",
-        "min-max-description": "Smallest/highest value"
+        "min-max-description": "Smallest/highest value",
+        "null-description": "Whether the value is null/undefined."
     },
     "edit-line-dialog": {
         "save-error": "Error saving line",
@@ -776,6 +777,17 @@
         "legend-text": "Legend text",
         "legend-text-description": "Text that will be shown above and below the legend. Can be formatted with {{markdown}}.",
         "legend-text-description-interpolation-markdown": "Markdown",
+        "custom-functions-heading": "Custom functions",
+        "custom-functions-introduction": "Functions defined here can be used in formula fields, route formulas and filters. They have access to the same variables as regular formula/filter expressions and can also call each other. Functions can also return simple constant values to be used as global variables.",
+        "custom-function-name": "Name",
+        "custom-function-formula": "Formula",
+        "custom-function-delete": "Delete",
+        "custom-function-reorder": "Reorder",
+        "custom-function-add": "Add",
+        "delete-custom-function-title": "Delete custom function",
+        "delete-custom-function-message": "Are you sure you want to delete the custom function “{{name}}”?",
+        "delete-custom-function-button": "Delete",
+        "unique-custom-function-name-error": "Custom function names must be unique.",
         "route-formulas-heading": "Route formulas",
         "route-formulas-introduction": "These will be shown as additional data fields when calculating a route while having this map open. In the formulas, only the route attributes (`mode`, `distance`, `time`, `ascent`, `descent` and `routePoints`) are available as variables. `data` will contain the results of the other route formulas. Formulas that result in an empty value will not be shown.",
         "route-formula-name": "Name",

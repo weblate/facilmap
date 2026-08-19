@@ -188,7 +188,7 @@
 				<template v-if="line.ascent == null || !showElevationPlot">
 					<template v-for="field in client.types[line.typeId].fields" :key="field.name">
 						<dt>{{formatFieldName(field.name)}}</dt>
-						<dd v-html="formatFieldValue(client.types[line.typeId], field, line, true)"></dd>
+						<dd v-html="client.mapData && formatFieldValue(client.mapData, client.types[line.typeId], field, line, true)"></dd>
 					</template>
 				</template>
 			</dl>

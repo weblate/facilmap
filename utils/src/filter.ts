@@ -1,6 +1,6 @@
 import { compileExpression as filtrexCompileExpression } from "filtrex";
 import { flattenObject, getProperty, quoteRegExp } from "./utils.js";
-import { type ID, type Marker, type Line, type Type, type CRU, currentMarkerToLegacyV2, type Formula, type Field, type Route } from "facilmap-types";
+import { type ID, type Marker, type Line, type Type, type CRU, currentMarkerToLegacyV2, type Formula, type Field, type Route, type CustomFunction } from "facilmap-types";
 import { cloneDeep } from "lodash-es";
 import { normalizeFieldValue } from "./objects";
 import { CHECKBOX_FALSE_LABEL, CHECKBOX_TRUE_LABEL } from "./format.js";
@@ -11,8 +11,6 @@ export type StrippedTypeForFormula = {
 };
 export type FormulaFunc = (obj: Marker<CRU> | Line<CRU> | Omit<Route, "trackPoints">, type: StrippedTypeForFormula) => string;
 export type FilterFunc = (...args: Parameters<FormulaFunc>) => boolean;
-
-export type CustomFunctions = Record<string, Formula>;
 
 const customFuncs = {
 	prop(obj: any, key: string) {
@@ -38,15 +36,15 @@ let currentObject: any = undefined;
 
 /** Keeps track synchronously of the called custom function names to prevent infinite recursion. */
 let calledCustomFunctions: string[] = [];
-export function makeCustomFunctions(customFunctions?: CustomFunctions): Record<string, Function> {
+export function makeCustomFunctions(customFunctions?: CustomFunction[]): Record<string, Function> {
 	const extraFunctions = {
-		...Object.fromEntries(Object.entries(customFunctions ?? {}).map(([name, func]) => {
+		...Object.fromEntries((customFunctions ?? []).map((customFunction) => {
 			let compiled = false;
 			let compiledFunc;
 
-			return [name, (...args: any[]) => {
+			return [customFunction.name, (...args: any[]) => {
 				if (!compiled) {
-					compiledFunc = compileExpression(func, extraFunctions);
+					compiledFunc = compileExpression(customFunction.formula, extraFunctions);
 					compiled = true;
 				}
 
@@ -56,10 +54,10 @@ export function makeCustomFunctions(customFunctions?: CustomFunctions): Record<s
 
 				const isOuter = calledCustomFunctions.length === 0;
 				try {
-					if (calledCustomFunctions.includes(name)) {
-						throw new Error(`Infinite recursion, tried to call function ${JSON.stringify(name)} in function stack ${JSON.stringify(calledCustomFunctions)}.`);
+					if (calledCustomFunctions.includes(customFunction.name)) {
+						throw new Error(`Infinite recursion, tried to call function ${JSON.stringify(customFunction.name)} in function stack ${JSON.stringify(calledCustomFunctions)}.`);
 					}
-					calledCustomFunctions.push(name);
+					calledCustomFunctions.push(customFunction.name);
 					return compiledFunc({
 						...currentObject,
 						args
@@ -70,12 +68,13 @@ export function makeCustomFunctions(customFunctions?: CustomFunctions): Record<s
 					}
 				}
 			}];
-		}))
+		})),
+		...customFuncs
 	};
 	return extraFunctions;
 }
 
-export function filterHasError(expr: string, customFunctions?: CustomFunctions): Error | undefined {
+export function filterHasError(expr: string, customFunctions?: CustomFunction[]): Error | undefined {
 	try {
 		if(expr && expr.trim()) {
 			filtrexCompileExpression(expr, {
@@ -108,11 +107,11 @@ function compileExpression(formula: Formula, extraFunctions: Record<string, Func
 	}
 }
 
-export function compileFilterExpression(expr?: string, customFunctions?: CustomFunctions): FilterFunc {
+export function compileFilterExpression(expr?: string, customFunctions?: CustomFunction[]): FilterFunc {
 	const filterFunc = compileExpression({ type: "filtrex", code: expr ?? "" }, makeCustomFunctions(customFunctions));
 	if (filterFunc) {
 		return (obj, type) => {
-			currentObject = prepareObject(obj, type);
+			currentObject = prepareObject(obj, type, customFunctions);
 			try {
 				return !!filterFunc(currentObject);
 			} finally {
@@ -124,13 +123,13 @@ export function compileFilterExpression(expr?: string, customFunctions?: CustomF
 	}
 }
 
-export function compileFormulaExpression(formula?: Formula, customFunctions?: CustomFunctions): FormulaFunc {
+export function compileFormulaExpression(formula?: Formula, customFunctions?: CustomFunction[]): FormulaFunc {
 	const compiled = formula && compileExpression(formula, makeCustomFunctions(customFunctions));
 	if (compiled) {
 		return (obj, type) => {
 			currentObject = obj;
 			try {
-				const result = compiled(prepareObject(obj, type));
+				const result = compiled(prepareObject(obj, type, customFunctions));
 				switch (typeof result) {
 					case "boolean":
 						return result ? CHECKBOX_TRUE_LABEL : CHECKBOX_FALSE_LABEL;
@@ -233,7 +232,7 @@ export function makeTypeFilter(previousFilter: string = "", typeId: ID, filtered
  */
 let handledFieldNames: string[] | undefined = undefined;
 
-export function prepareObject(obj: Marker<CRU> | Line<CRU> | Route, type: StrippedTypeForFormula): any {
+export function prepareObject(obj: Marker<CRU> | Line<CRU> | Route, type: StrippedTypeForFormula, customFunctions?: CustomFunction[]): any {
 	const fixedObj: any = cloneDeep(obj);
 
 	if (!fixedObj.data) {
@@ -272,7 +271,7 @@ export function prepareObject(obj: Marker<CRU> | Line<CRU> | Route, type: Stripp
 							value = [true, ""];
 						} else {
 							handledFieldNames!.push(field.name);
-							value = [true, compileFormulaExpression(field.formula)(fixedObj, type)];
+							value = [true, compileFormulaExpression(field.formula, customFunctions)(fixedObj, type)];
 						}
 					} finally {
 						if (isOuterGetter) {

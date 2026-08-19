@@ -1,9 +1,10 @@
 <script setup lang="ts">
-	import type { Field, Line, Marker, Type } from "facilmap-types";
+	import type { Field, Line, MapData, Marker, Type } from "facilmap-types";
 	import { computed } from "vue";
 	import { formatFieldName, formatFieldValue, normalizeFieldValue } from "facilmap-utils";
 
 	const props = withDefaults(defineProps<{
+		mapData?: MapData;
 		type?: Type;
 		object?: Marker | Line;
 		field: Field;
@@ -33,7 +34,7 @@
 			<div
 				class="form-control-plaintext"
 				:id="id"
-				v-html="props.type && props.object ? formatFieldValue(props.type, field, props.object, true) : ''"
+				v-html="props.mapData && props.type && props.object ? formatFieldValue(props.mapData, props.type, field, props.object, true) : ''"
 			/>
 		</template>
 		<template v-else-if="field.type === 'textarea'">

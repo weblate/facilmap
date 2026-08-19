@@ -98,7 +98,7 @@
 
 			<template v-for="field in client.types[marker.typeId].fields" :key="field.name">
 				<dt>{{formatFieldName(field.name)}}</dt>
-				<dd v-html="formatFieldValue(client.types[marker.typeId], field, marker, true)"></dd>
+				<dd v-html="client.mapData && formatFieldValue(client.mapData, client.types[marker.typeId], field, marker, true)"></dd>
 			</template>
 		</dl>
 

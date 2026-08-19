@@ -112,7 +112,7 @@
 		fields: client.value.mapData.routeFormulas.map((f) => ({ type: "formula", name: f.name, formula: f.formula }))
 	} satisfies StrippedTypeForFormula : undefined);
 	const formulaResults = computed(() => strippedType.value ? strippedType.value.fields.flatMap((f) => {
-		const value = compileFormulaExpression(f.formula)(routeObj.value!, strippedType.value!);
+		const value = compileFormulaExpression(f.formula, client.value.mapData?.customFunctions)(routeObj.value!, strippedType.value!);
 		return value === "" ? [] : [{ name: f.name, valueHtml: markdownInline(value, true) }];
 	}) : []);
 

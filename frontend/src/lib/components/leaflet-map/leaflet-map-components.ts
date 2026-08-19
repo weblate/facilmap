@@ -29,7 +29,7 @@ import { Units } from "facilmap-types";
 
 type MapContextWithoutComponents = Optional<WritableMapContext, 'components'>;
 
-function useMap(element: Ref<HTMLElement>, mapContext: MapContextWithoutComponents): Ref<Raw<Map>> {
+function useMap(element: Ref<HTMLElement>, mapContext: MapContextWithoutComponents, client: Ref<ClientContext>): Ref<Raw<Map>> {
 	const mapRef = shallowRef(undefined as any as Map);
 	const interaction = ref(0);
 
@@ -88,6 +88,10 @@ function useMap(element: Ref<HTMLElement>, mapContext: MapContextWithoutComponen
 	watch(() => interaction.value, () => {
 		mapContext.interaction = interaction.value > 0;
 	}, { immediate: true });
+
+	watchEffect(() => {
+		mapRef.value.setFmFilterCustomFuncs(client.value.mapData?.customFunctions ?? []);
+	});
 
 	return mapRef;
 }
@@ -495,7 +499,7 @@ function useHashHandler(map: Ref<Map>, client: Ref<ClientContext>, context: Faci
 
 function useMapComponents(context: FacilMapContext, mapContext: MapContextWithoutComponents, mapRef: Ref<HTMLElement>, innerContainerRef: Ref<HTMLElement>): MapComponents {
 	const client = requireClientContext(context);
-	const map = useMap(mapRef, mapContext);
+	const map = useMap(mapRef, mapContext, client);
 	const attribution = useAttribution(map);
 	const zoomControl = useZoomControl(map);
 	const bboxHandler = useBboxHandler(map, client);

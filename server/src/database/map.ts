@@ -1,5 +1,5 @@
 import { DataTypes, type InferAttributes, type InferCreationAttributes, Model, Op, Sequelize, type ForeignKey } from "sequelize";
-import type { CRU, FindMapsQuery, FindMapsResult, MapData, MapId, PagedResults, RouteFormula } from "facilmap-types";
+import type { CRU, CustomFunction, FindMapsQuery, FindMapsResult, MapData, MapId, PagedResults, RouteFormula } from "facilmap-types";
 import Database from "./database.js";
 import { createModel } from "./helpers.js";
 import type { ViewModel } from "./view.js";
@@ -17,6 +17,7 @@ export interface MapModel extends Model<InferAttributes<MapModel>, InferCreation
 	clusterMarkers: boolean;
 	legend1: string;
 	legend2: string;
+	customFunctions: CustomFunction[];
 	routeFormulas: RouteFormula[];
 	defaultViewId: ForeignKey<ViewModel["id"]> | null
 	toJSON: () => RawMapData;
@@ -48,6 +49,17 @@ export default class DatabaseMaps {
 			clusterMarkers: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
 			legend1: { type: DataTypes.TEXT, allowNull: false, defaultValue: "" },
 			legend2: { type: DataTypes.TEXT, allowNull: false, defaultValue: "" },
+			customFunctions: {
+				type: DataTypes.TEXT,
+				allowNull: false,
+				get: function(this: MapModel) {
+					const customFunctions = this.getDataValue("customFunctions") as any as string; // https://github.com/sequelize/sequelize/issues/11558
+					return customFunctions != null ? JSON.parse(customFunctions) : customFunctions;
+				},
+				set: function(this: MapModel, v: CustomFunction[]) {
+					this.setDataValue("customFunctions", v != null ? JSON.stringify(v) as any : v);
+				}
+			},
 			routeFormulas: {
 				type: DataTypes.TEXT,
 				allowNull: false,
