@@ -460,6 +460,12 @@
 						</code>
 					</td>
 				</tr>
+
+				<tr>
+					<td><code>log()</code></td>
+					<td>{{i18n.t("filter-syntax.log-description")}}</td>
+					<td><code>log(&quot;test&quot;)</code></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

@@ -28,6 +28,12 @@ const customFuncs = {
 
 	null(obj: any) {
 		return obj == null;
+	},
+
+	log(...args: any) {
+		if (typeof window !== "undefined") { // Only call in browser, not on the server
+			console.log("Filter/formula debug output:", ...args);
+		}
 	}
 };
 

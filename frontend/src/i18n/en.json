@@ -226,7 +226,8 @@
         "round-description": "Round ({{ceil}}: up, {{floor}}: down)",
         "functions-description": "Mathematical functions",
         "min-max-description": "Smallest/highest value",
-        "null-description": "Whether the value is null/undefined."
+        "null-description": "Whether the value is null/undefined.",
+        "log-description": "Logs its parameters to the browser console for debugging purposes."
     },
     "edit-line-dialog": {
         "save-error": "Error saving line",
