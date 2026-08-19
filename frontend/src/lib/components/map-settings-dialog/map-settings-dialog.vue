@@ -9,6 +9,7 @@
 	import { useI18n } from "../../utils/i18n";
 	import MapSettingsGeneral from "./map-settings-general.vue";
 	import MapSettingsDelete from "./map-settings-delete.vue";
+	import MapSettingsFormulas from "./map-settings-formulas.vue";
 
 	const context = injectContextRequired();
 	const client = requireClientContext(context);
@@ -44,6 +45,7 @@
 		id: random("read"),
 		legend1: "",
 		legend2: "",
+		routeFormulas: [],
 		defaultViewId: null
 	} : undefined;
 
@@ -97,6 +99,12 @@
 					</a>
 				</li>
 
+				<li class="nav-item">
+					<a class="nav-link" :class="{ active: activeTab === 1 }" aria-current="page" href="javascript:" @click="activeTab = 1">
+						{{i18n.t("map-settings-dialog.tab-formulas")}}
+					</a>
+				</li>
+
 				<li v-if="!props.isCreate" class="nav-item">
 					<a class="nav-link" :class="{ active: activeTab === 2 }" aria-current="page" href="javascript:" @click="activeTab = 2">
 						{{i18n.t("map-settings-dialog.tab-delete-map")}}
@@ -108,6 +116,12 @@
 				<MapSettingsGeneral
 					:mapData="mapData"
 				></MapSettingsGeneral>
+			</div>
+
+			<div v-show="activeTab === 1" @invalid.capture="activeTab = 1">
+				<MapSettingsFormulas
+					:mapData="mapData"
+				></MapSettingsFormulas>
 			</div>
 
 			<div v-show="activeTab === 2" @invalid.capture="activeTab = 2">

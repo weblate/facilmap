@@ -1,11 +1,15 @@
 import { compileExpression as filtrexCompileExpression } from "filtrex";
 import { flattenObject, getProperty, quoteRegExp } from "./utils.js";
-import { type ID, type Marker, type Line, type Type, type CRU, currentMarkerToLegacyV2, type Formula } from "facilmap-types";
+import { type ID, type Marker, type Line, type Type, type CRU, currentMarkerToLegacyV2, type Formula, type Field, type Route } from "facilmap-types";
 import { cloneDeep } from "lodash-es";
 import { normalizeFieldValue } from "./objects";
 import { CHECKBOX_FALSE_LABEL, CHECKBOX_TRUE_LABEL } from "./format.js";
 
-export type FormulaFunc = (obj: Marker<CRU> | Line<CRU>, type: Type) => string;
+export type StrippedTypeForFormula = {
+	type: Type["type"] | "route";
+	fields: Array<Pick<Field, "name" | "type" | "formula">>;
+};
+export type FormulaFunc = (obj: Marker<CRU> | Line<CRU> | Omit<Route, "trackPoints">, type: StrippedTypeForFormula) => string;
 export type FilterFunc = (...args: Parameters<FormulaFunc>) => boolean;
 
 export type CustomFunctions = Record<string, Formula>;
@@ -82,6 +86,10 @@ export function filterHasError(expr: string, customFunctions?: CustomFunctions):
 	}
 }
 
+export function validateFilter(filter: string): string | undefined {
+	return filterHasError(filter)?.message;
+}
+
 function compileExpression(formula: Formula, extraFunctions: Record<string, Function>): ((obj: any) => any) | undefined {
 	try {
 		if (formula.type !== "filtrex") {
@@ -124,7 +132,7 @@ export function compileFormulaExpression(formula?: Formula, customFunctions?: Cu
 						return result ? CHECKBOX_TRUE_LABEL : CHECKBOX_FALSE_LABEL;
 					case "number":
 					case "bigint":
-						return `${result}`;
+						return typeof result === "number" && isNaN(result) ? "" : `${result}`;
 					case "string":
 						return result;
 					default:
@@ -221,7 +229,7 @@ export function makeTypeFilter(previousFilter: string = "", typeId: ID, filtered
  */
 let handledFieldNames: string[] | undefined = undefined;
 
-export function prepareObject(obj: Marker<CRU> | Line<CRU>, type: Type): any {
+export function prepareObject(obj: Marker<CRU> | Line<CRU> | Route, type: StrippedTypeForFormula): any {
 	const fixedObj: any = cloneDeep(obj);
 
 	if (!fixedObj.data) {

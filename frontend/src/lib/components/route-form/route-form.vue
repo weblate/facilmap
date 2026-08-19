@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import { computed, markRaw, nextTick, reactive, ref, toRaw, watch, type DeepReadonly } from "vue";
 	import Icon from "../ui/icon.vue";
-	import { decodeRouteQuery, encodeRouteQuery, formatCoordinates, formatDistance, formatRouteMode, formatRouteTime, formatTypeName, isSearchId, normalizeMarkerName } from "facilmap-utils";
+	import { compileFormulaExpression, decodeRouteQuery, encodeRouteQuery, formatCoordinates, formatDistance, formatRouteMode, formatRouteTime, formatTypeName, isSearchId, markdownInline, normalizeMarkerName, type StrippedTypeForFormula } from "facilmap-utils";
 	import { useToasts } from "../ui/toasts/toasts.vue";
 	import type { FindOnMapResult, SearchResult } from "facilmap-types";
 	import { getMarkerIcon, type HashQuery, MarkerLayer, RouteLayer } from "facilmap-leaflet";
@@ -105,6 +105,16 @@
 
 	const routeObj = computed(() => props.routeId ? client.value.routes[props.routeId] : client.value.route);
 	const hasRoute = computed(() => !!routeObj.value);
+
+	const strippedType = computed(() => routeObj.value && client.value.mapData && client.value.mapData.routeFormulas.length > 0 ? {
+		...routeObj.value,
+		type: "route",
+		fields: client.value.mapData.routeFormulas.map((f) => ({ type: "formula", name: f.name, formula: f.formula }))
+	} satisfies StrippedTypeForFormula : undefined);
+	const formulaResults = computed(() => strippedType.value ? strippedType.value.fields.flatMap((f) => {
+		const value = compileFormulaExpression(f.formula)(routeObj.value!, strippedType.value!);
+		return value === "" ? [] : [{ name: f.name, valueHtml: markdownInline(value, true) }];
+	}) : []);
 
 	const routeMode = ref(routeObj.value?.mode ?? "car");
 	const destinations = ref<Destination[]>(routeObj.value ? (
@@ -711,6 +721,11 @@
 					<template v-if="routeObj.ascent != null">
 						<dt>{{i18n.t("route-form.ascent-descent")}}</dt>
 						<dd><ElevationStats :route="routeObj"></ElevationStats></dd>
+					</template>
+
+					<template v-for="result in formulaResults" :key="result.name">
+						<dt>{{result.name}}</dt>
+						<dd v-html="result.valueHtml"></dd>
 					</template>
 				</dl>
 

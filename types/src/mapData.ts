@@ -1,5 +1,5 @@
 import { viewValidator } from "./view.js";
-import { idValidator, mapIdValidator } from "./base.js";
+import { formulaValidator, idValidator, mapIdValidator } from "./base.js";
 import * as z from "zod";
 import { CRU, type CRUType, cruValidator, optionalUpdate, optionalCreate, onlyRead, onlyCreate } from "./cru.js";
 
@@ -9,6 +9,12 @@ export enum Writable {
 	ADMIN = 2
 }
 export const writableValidator = z.nativeEnum(Writable);
+
+export const routeFormulaValidator = z.object({
+	name: z.string(),
+	formula: formulaValidator
+});
+export type RouteFormula = z.infer<typeof routeFormulaValidator>;
 
 export const mapDataValidator = cruValidator({
 	id: optionalUpdate(mapIdValidator),
@@ -30,6 +36,7 @@ export const mapDataValidator = cruValidator({
 	legend1: optionalCreate(z.string(), ""),
 	legend2: optionalCreate(z.string(), ""),
 	defaultViewId: optionalCreate(idValidator.or(z.null()), null),
+	routeFormulas: optionalCreate(z.array(routeFormulaValidator), () => []),
 
 	createDefaultTypes: onlyCreate(z.boolean().default(true)),
 
