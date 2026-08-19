@@ -26,6 +26,10 @@ const customFuncs = {
 			return obj.toLowerCase();
 		else
 			return obj;
+	},
+
+	null(obj: any) {
+		return obj == null;
 	}
 };
 
