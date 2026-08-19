@@ -779,7 +779,7 @@
         "legend-text-description": "Text that will be shown above and below the legend. Can be formatted with {{markdown}}.",
         "legend-text-description-interpolation-markdown": "Markdown",
         "custom-functions-heading": "Custom functions",
-        "custom-functions-introduction": "Functions defined here can be used in formula fields, route formulas and filters. They have access to the same variables as regular formula/filter expressions and can also call each other. Functions can also return simple constant values to be used as global variables.",
+        "custom-functions-introduction": "Functions defined here can be used in formula fields, route formulas and filters. They have access to the same variables as regular formula/filter expressions and can also call each other. Use `prop(args, 0)` and so on to access function arguments. Functions can also return simple constant values to be used as global variables.",
         "custom-function-name": "Name",
         "custom-function-formula": "Formula",
         "custom-function-delete": "Delete",
